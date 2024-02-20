@@ -9,9 +9,9 @@
       {{ currentUser.email }}
       <button @click="logout">Выход</button>
     </div>
-    <div v-else>
-      <router-link to="/login">Вход</router-link>
-      <router-link to="/registration">Регистрация</router-link>
+    <div v-else class="nav-button">
+      <router-link to="/login" class="nav-button-text">Вход</router-link>
+      <router-link to="/registration" class="nav-button-text">Регистрация</router-link>
     </div>
   </div>
 </template>
