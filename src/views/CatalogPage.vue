@@ -24,10 +24,10 @@ const isClient = computed(() => store.state.userRole === 'Client');
 const products = ref([
   {
     id: 1,
-    name: 'Маска для волос и филлер',
+    name: 'Маски для волос и филлеры мини',
     description: 'Питательный набор от Lador для волос',
-    price: 2600,
-    image: 'https://maskshop.ru/images/blog/lador_eco_professional/Lador_Lpp_Shampoo.jpg'
+    price: 5200,
+    image: 'https://unboxshop.ru/upload/resize_cache/iblock/e19/1200_1200_140cd750bba9870f18aada2478b24840a/lm9s1nyegwhdnsnit0q6l91wvlz42rf6.jpg'
   },
   {
     id: 2,
