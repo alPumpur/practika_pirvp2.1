@@ -6,7 +6,11 @@
         <img :src="product.image" :alt="product.name" class="product-image">
         <h2 class="product-name">{{ product.name }}</h2>
         <p class="product-description">{{ product.description }}</p>
-        <button @click="addToCart(product)" class="product-price-btn">{{ product.price }}</button>
+        <!-- Добавьте условие, чтобы кнопка добавления в корзину была видима только при аутентификации -->
+        <button v-if="isAuthenticated" @click="addToCart(product)" class="product-price-btn">{{ product.price }}</button>
+        <div v-else>
+          <p>Чтобы добавить товар в корзину, пожалуйста, авторизуйтесь</p>
+        </div>
       </div>
     </div>
     <router-link v-if="isLoggedIn && isClient" to="/order">Ранее оформленные заказы</router-link>
@@ -14,39 +18,45 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
+import {ref, computed} from 'vue';
+import {useStore} from 'vuex';
 
 const store = useStore();
 
-const isLoggedIn = computed(() => store.state.isLoggedIn);
+const isAuthenticated = computed(() => store.state.isAuthenticated);
 const isClient = computed(() => store.state.userRole === 'Client');
 const products = ref([
   {
     id: 1,
-    name: 'Маски для волос и филлеры мини',
-    description: 'Питательный набор от Lador для волос',
-    price: 5200,
-    image: 'https://unboxshop.ru/upload/resize_cache/iblock/e19/1200_1200_140cd750bba9870f18aada2478b24840a/lm9s1nyegwhdnsnit0q6l91wvlz42rf6.jpg'
+    name: 'ryzen 7 7800',
+    description: '8 ядер 16 потоков',
+    price: 16000,
+    image: 'https://main-cdn.sbermegamarket.ru/big1/hlr-system/-63/482/592/633/152/1/100028082023b0.jpg'
   },
   {
     id: 2,
-    name: 'Гели для душа Lador',
-    description: 'Увлажняющие гели для душа от Lador',
-    price: 4000,
-    image: 'https://lador-store.ru/images/brands/774/block-1.jpg'
+    name: 'gigabyte 3070',
+    description: '12gb ram 2034mZh',
+    price: 35000,
+    image: 'https://allsoft.ru/upload/medialibrary/24d/24d13c5e6b8c850dcdac48148755fd4b.jpeg'
   },
   {
     id: 3,
-    name: 'Шампунь для волос Lador',
-    description: 'Шампунь для волос без силиконов увлажняющий',
-    price: 1500,
-    image: 'https://unboxshop.ru/upload/resize_cache/iblock/097/1200_1200_140cd750bba9870f18aada2478b24840a/1qfq54slwit78z2ble55524vri8s3sdn.jpg'
+    name: 'msi b550 gaming plus',
+    description: 'AM4 ddr4 4200mZh',
+    price: 15000,
+    image: 'https://ir.ozone.ru/s3/multimedia-w/c1000/6286686428.jpg'
   },
 ]);
 
 const addToCart = (product) => {
-  store.commit('addToCart', product);
+  // Проверяем, аутентифицирован ли пользователь перед добавлением в корзину
+  if (isAuthenticated.value) {
+    store.commit('addToCart', product);
+  } else {
+    console.log('Пользователь не аутентифицирован. Невозможно добавить товар в корзину.');
+    // Здесь можно также показать всплывающее окно или другое уведомление о необходимости аутентификации
+  }
 };
 </script>
 

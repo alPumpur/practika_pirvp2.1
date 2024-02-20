@@ -11,35 +11,31 @@
         <input type="password" id="password" v-model="password" required>
       </div>
       <button type="submit">Войти</button>
-      <router-link to="/registration">Регистрация</router-link>
+      <router-link v-if="!isLoggedIn" to="/registration">Регистрация</router-link>
     </form>
   </div>
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import api from '@/services/api'; // Импорт вашего API
 
-export default {
-  setup() {
-    const store = useStore();
-    const router = useRouter();
-    const email = ref('');
-    const password = ref('');
+const store = useStore();
+const email = ref('');
+const password = ref('');
 
-    const login = async () => {
-      try {
-        const user = { email: email.value, password: password.value };
-        await store.dispatch('loginUser', user);
-        router.push({ name: 'catalog' });
-      } catch (error) {
-        console.error('Ошибка входа:', error);
-      }
-    };
+const isLoggedIn = computed(() => !!store.state.currentUser);
 
-    return { email, password, login };
+const login = async () => {
+  try {
+    const user = { email: email.value, password: password.value };
+    const token = await api.login(user); // Используем ваш API для аутентификации
+    store.commit('setUser', token); // Сохраняем токен пользователя в хранилище Vuex
+    // Переход на другую страницу, например, на главную страницу
+    router.push({ name: 'catalog' });
+  } catch (error) {
+    console.error('Ошибка входа:', error.message);
   }
 };
 </script>
-
