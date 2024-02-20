@@ -14,6 +14,9 @@
       </div>
       <button type="submit" class="login-btn">Войти</button>
       <router-link v-if="!isLoggedIn" to="/registration" class="register-link">Зарегистрироваться</router-link>
+      <div class="button-group">
+        <router-link class="back-btn" to="/">Назад</router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -111,5 +114,18 @@ input[type="password"] {
   text-align: center; /* Выравниваем по центру */
   margin-top: 10px; /* Отступ сверху */
   color: #A0522D; /* Цвет текста ссылки */
+}
+
+.back-btn {
+  width: 100%; /* Ширина кнопки */
+  padding: 10px; /* Внутренний отступ */
+  border-radius: 5px; /* Скругление краев кнопки */
+  border: none; /* Убираем границу */
+  color: #8B4513; /* Цвет текста */
+  margin-top: 10px; /* Отступ сверху */
+}
+
+.button-group {
+  margin-top: 10px;
 }
 </style>

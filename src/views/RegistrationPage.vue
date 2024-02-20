@@ -13,6 +13,9 @@
         <span v-if="passwordError" class="error-message">Пароль должен быть не менее 6 символов</span>
       </div>
       <button type="submit" class="register-btn">Зарегистрироваться</button>
+      <div class="button-group">
+        <router-link class="back-btn" to="/">Назад</router-link>
+      </div>
     </form>
   </div>
   <div v-else>
@@ -60,6 +63,11 @@ const register = async () => {
     }
   }
 };
+
+const redirectToCatalog = () => {
+  router.push({name: 'catalog'});
+};
+
 </script>
 
 <style scoped>
@@ -107,9 +115,23 @@ input[type="password"] {
   color: white; /* Цвет текста */
   cursor: pointer; /* Изменяем курсор при наведении */
   transition: background-color 0.3s ease; /* Плавное изменение цвета кнопки */
+  margin-bottom: 10px;
 }
 
 .register-btn:hover {
   background-color: #8B4513; /* Цвет кнопки при наведении */
+}
+
+.back-btn {
+  width: 100%; /* Ширина кнопки */
+  padding: 10px; /* Внутренний отступ */
+  border-radius: 5px; /* Скругление краев кнопки */
+  border: none; /* Убираем границу */
+  color: #8B4513; /* Цвет текста */
+  margin-top: 10px; /* Отступ сверху */
+}
+
+.button-group {
+  margin-top: 10px;
 }
 </style>
