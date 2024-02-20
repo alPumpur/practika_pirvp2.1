@@ -1,8 +1,13 @@
-import './assets/main.css'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import Item from '@/components/Item.vue'; // Путь к компоненту Item.vue
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+const app = createApp(App);
 
-createApp(App).use(store).use(router).mount('#app')
+app.component('Item', Item); // Зарегистрировать компонент глобально
+
+app.use(router);
+app.use(store);
+app.mount('#app');

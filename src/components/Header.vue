@@ -1,12 +1,38 @@
-<script setup>
-import Nav from "@/components/Nav.vue";
-</script>
-
 <template>
   <header class="header">
-    <Nav></Nav>
+    <Nav v-if="!isLoggedIn"></Nav>
+    <div v-else>
+      {{ currentUser.email }}
+      <button @click="logout">Выход</button>
+    </div>
   </header>
 </template>
+
+<script setup>
+import Nav from "@/components/Nav.vue";
+import { useStore } from 'vuex';
+import { computed, watch } from 'vue';
+import { useRouter } from 'vue-router'; // Импортируем useRouter из vue-router
+
+const store = useStore();
+const router = useRouter(); // Получаем объект router
+
+const isLoggedIn = computed(() => !!store.state.currentUser);
+const currentUser = computed(() => store.state.currentUser);
+
+const logout = () => {
+  store.dispatch('logoutUser');
+  router.push({ name: 'login' }); // Перенаправляем на страницу входа после выхода
+};
+
+// Следим за изменениями в состоянии currentUser в хранилище Vuex
+watch(currentUser, (newValue) => {
+  if (!newValue) {
+    // Если текущий пользователь отсутствует, перенаправляем на страницу входа
+    router.push({ name: 'login' });
+  }
+});
+</script>
 
 <style scoped>
 .header {
@@ -15,22 +41,3 @@ import Nav from "@/components/Nav.vue";
   padding: 10px;
 }
 </style>
-
-<script>
-import { useStore } from 'vuex';
-import { computed } from 'vue';
-
-export default {
-  setup() {
-    const store = useStore();
-    const isLoggedIn = computed(() => !!store.state.currentUser);
-    const currentUser = computed(() => store.state.currentUser);
-
-    const logout = () => {
-      store.dispatch('logoutUser');
-    };
-
-    return { isLoggedIn, currentUser, logout };
-  }
-};
-</script>

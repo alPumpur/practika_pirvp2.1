@@ -7,18 +7,70 @@ const store = createStore({
     return {
       currentUser: null, // Включить currentUser в начальное состояние
       cartItems: [],
+      isAuthenticated: true, // Добавить флаг авторизации и установить по умолчанию как false
     };
   },
   mutations: {
-    setUser(state, user) {
-      state.currentUser = user;
+    addToCart(state, newItem) {
+      const existingItemIndex = state.cartItems.findIndex(item => item.id === newItem.id);
+      if (existingItemIndex !== -1) {
+        // Если товар уже есть в корзине, увеличиваем его количество
+        state.cartItems[existingItemIndex].quantity++;
+      } else {
+        // Если товара нет в корзине, добавляем его
+        newItem.quantity = 1; // Устанавливаем количество товара в 1
+        state.cartItems.push(newItem);
+      }
+      // Обновляем состояние с помощью Vue.set
+      state.cartItems = [...state.cartItems];
+    },
+    // Мутация для удаления товара из корзины
+    removeFromCart(state, itemId) {
+      state.cartItems = state.cartItems.filter(item => item.id !== itemId);
+    },
+    // Мутация для увеличения количества товара в корзине
+    increaseQuantity(state, itemId) {
+      const item = state.cartItems.find(item => item.id === itemId);
+      if (item) {
+        item.quantity++;
+        // Обновляем состояние с помощью Vue.set
+        state.cartItems = [...state.cartItems];
+      }
+    },
+    // Мутация для уменьшения количества товара в корзине
+    decreaseQuantity(state, itemId) {
+      const item = state.cartItems.find(item => item.id === itemId);
+      if (item && item.quantity > 1) {
+        item.quantity--;
+        // Обновляем состояние с помощью Vue.set
+        state.cartItems = [...state.cartItems];
+      }
+    },
+    setUser(state, token) {
+      state.isAuthenticated = true; // Устанавливаем флаг как true при успешной авторизации
+      state.currentUser = token;
     },
     clearUser(state) {
+      state.isAuthenticated = false; // Сбрасываем флаг при выходе пользователя
       state.currentUser = null;
-      state.cartItems = []; // Очистить cartItems при выходе
-    },
+    }
   },
   actions: {
+    async addToCart({ commit }, newItem) {
+      commit('addToCart', newItem);
+    },
+    // Действие для удаления товара из корзины
+    async removeFromCart({ commit }, itemId) {
+      commit('removeFromCart', itemId);
+    },
+    // Действие для увеличения количества товара в корзине
+    async increaseQuantity({ commit }, itemId) {
+      commit('increaseQuantity', itemId);
+    },
+    // Действие для уменьшения количества товара в корзине
+    async decreaseQuantity({ commit }, itemId) {
+      commit('decreaseQuantity', itemId);
+    },
     async loginUser({ commit }, user) {
       try {
         const authenticatedUser = await api.login(user); // Использовать сервис API для аутентификации

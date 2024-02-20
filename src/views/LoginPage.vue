@@ -19,20 +19,27 @@
 <script>
 import { useStore } from 'vuex';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const store = useStore();
+    const router = useRouter();
     const email = ref('');
     const password = ref('');
 
-    const login = () => {
-      console.log('Trying to login...');
-      const user = { email: email.value, password: password.value };
-      console.log('User:', user);
-      store.dispatch('loginUser', user)
-          .then(() => console.log('Login successful'))
-          .catch(error => console.error('Login error:', error));
-    };}}
+    const login = async () => {
+      try {
+        const user = { email: email.value, password: password.value };
+        await store.dispatch('loginUser', user);
+        router.push({ name: 'catalog' });
+      } catch (error) {
+        console.error('Ошибка входа:', error);
+      }
+    };
 
+    return { email, password, login };
+  }
+};
 </script>
+
