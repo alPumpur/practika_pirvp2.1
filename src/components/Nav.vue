@@ -7,20 +7,14 @@
     </nav>
     <div>
       <div v-if="isAuthenticated">
-        <div v-if="currentUser">
-          {{ currentUser.email }}
-          <button @click="logout">Выход</button>
-        </div>
-        <div v-else>
-          <!-- Пользователь авторизован, но информация о пользователе не доступна -->
+        <div class="welcome">
           <p>Добро пожаловать!</p>
-          <button @click="logout">Выход</button>
+          <button @click="logout" class="nav-btn">Выход</button>
         </div>
       </div>
       <div v-else>
-        <!-- Пользователь не авторизован -->
-        <router-link to="/login">Вход</router-link>
-        <router-link to="/registration">Регистрация</router-link>
+        <router-link to="/login" class="nav-btn">Вход</router-link>
+        <router-link to="/registration" class="nav-btn">Регистрация</router-link>
       </div>
     </div>
   </div>
@@ -37,16 +31,17 @@ const totalItemsInCart = computed(() => {
 });
 
 const isAuthenticated = computed(() => store.state.isAuthenticated);
-const currentUser = computed(() => store.state.currentUser);
 
 const logout = () => {
   store.dispatch('logoutUser');
 };
 </script>
+
 <style scoped>
 .nav-block {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .nav-list {
@@ -58,5 +53,54 @@ const logout = () => {
   background: none;
   padding: 10px 20px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  color: black;
+}
+
+.nav-list .item:hover {
+  background-color: #DEB887;
+  color: white;
+}
+
+/* Выравниваем кнопки по вертикали */
+.nav-list .item,
+nav > div {
+  display: flex;
+  align-items: center;
+}
+
+/* Фон вокруг кнопок */
+nav > div {
+  background-color: #f8f9fa;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+/* Стили для кнопок входа, регистрации и выхода */
+.nav-btn {
+  background-color: #A0522D;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.nav-btn:hover {
+  background-color: #8B4513;
+}
+
+/* Стили для надписи "Добро пожаловать!" */
+.welcome {
+  display: flex;
+  align-items: center;
+}
+
+/* Отступ между надписью и кнопкой */
+.welcome p {
+  margin-right: 10px;
 }
 </style>
