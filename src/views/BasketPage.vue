@@ -89,6 +89,7 @@ const checkout = () => {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-right: 2px;
 }
 
 .buttons button:hover {
@@ -105,6 +106,7 @@ const checkout = () => {
 
 .total {
   font-weight: bold;
+  color: #8B4513;
 }
 
 .checkout-btn {

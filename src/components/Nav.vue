@@ -55,7 +55,7 @@ const logout = () => {
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 5px;
-  color: black;
+  color: #301801;
 }
 
 .nav-list .item:hover {
