@@ -56,7 +56,6 @@ const register = async () => {
       const user = { email: email.value, password: password.value };
       const token = await api.register(user); // Используем ваш API для регистрации
       store.commit('setUser', token); // Сохраняем токен пользователя в хранилище Vuex
-      // Переход на другую страницу, например, на главную страницу
       router.push({ name: 'catalog' });
     } catch (error) {
       console.error('Ошибка регистрации:', error.message);
@@ -72,63 +71,63 @@ const redirectToCatalog = () => {
 
 <style scoped>
 .registration-form {
-  width: 300px; /* Ширина формы */
-  margin: 15px auto; /* Отступы сверху и снизу, выравнивание по центру */
+  width: 300px;
+  margin: 15px auto;
   padding: 20px;
-  border-radius: 10px; /* Скругление краев */
-  background-color: #FFE4C4; /* Цвет фона формы */
+  border-radius: 10px;
+  background-color: #FFE4C4;
 }
 
 .form-group {
-  margin-bottom: 15px; /* Отступ между элементами формы */
+  margin-bottom: 15px;
 }
 
 label {
-  display: block; /* Каждый label с новой строки */
-  margin-bottom: 5px; /* Отступ между label и input */
+  display: block;
+  margin-bottom: 5px;
 }
 
 input[type="email"],
 input[type="password"] {
-  width: 250px; /* Ширина input */
-  padding: 8px; /* Внутренний отступ */
-  border-radius: 5px; /* Скругление краев input */
-  border: 1px solid #ccc; /* Обводка input */
+  width: 250px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .has-error input[type="email"],
 .has-error input[type="password"] {
-  border-color: red; /* Цвет границы при ошибке */
+  border-color: red;
 }
 
 .error-message {
-  color: red; /* Цвет сообщения об ошибке */
-  font-size: 12px; /* Размер текста сообщения об ошибке */
+  color: red;
+  font-size: 12px;
 }
 
 .register-btn {
-  width: 100%; /* Ширина кнопки */
-  padding: 10px; /* Внутренний отступ */
-  border-radius: 5px; /* Скругление краев кнопки */
-  border: none; /* Убираем границу */
-  background-color: #A0522D; /* Цвет кнопки */
-  color: white; /* Цвет текста */
-  cursor: pointer; /* Изменяем курсор при наведении */
-  transition: background-color 0.3s ease; /* Плавное изменение цвета кнопки */
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #A0522D;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
   margin-bottom: 10px;
 }
 
 .register-btn:hover {
-  background-color: #8B4513; /* Цвет кнопки при наведении */
+  background-color: #8B4513;
 }
 
 .back-btn {
-  width: 100%; /* Ширина кнопки */
-  padding: 10px; /* Внутренний отступ */
-  border-radius: 5px; /* Скругление краев кнопки */
-  border: none; /* Убираем границу */
-  color: #8B4513; /* Цвет текста */
-  margin-top: 10px; /* Отступ сверху */
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  color: #8B4513;
+  margin-top: 10px;
 }
 
 .button-group {

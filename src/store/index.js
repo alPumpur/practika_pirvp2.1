@@ -18,10 +18,9 @@ const store = createStore({
         state.cartItems[existingItemIndex].quantity++;
       } else {
         // Если товара нет в корзине, добавляем его
-        newItem.quantity = 1; // Устанавливаем количество товара в 1
+        newItem.quantity = 1;
         state.cartItems.push(newItem);
       }
-      // Обновляем состояние с помощью Vue.set
       state.cartItems = [...state.cartItems];
     },
     // Мутация для удаления товара из корзины
@@ -33,7 +32,6 @@ const store = createStore({
       const item = state.cartItems.find(item => item.id === itemId);
       if (item) {
         item.quantity++;
-        // Обновляем состояние с помощью Vue.set
         state.cartItems = [...state.cartItems];
       }
     },
@@ -42,7 +40,6 @@ const store = createStore({
       const item = state.cartItems.find(item => item.id === itemId);
       if (item && item.quantity > 1) {
         item.quantity--;
-        // Обновляем состояние с помощью Vue.set
         state.cartItems = [...state.cartItems];
       }
     },

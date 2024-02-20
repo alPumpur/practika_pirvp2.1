@@ -97,6 +97,7 @@ nav > div {
 .welcome {
   display: flex;
   align-items: center;
+  color: #301801;
 }
 
 /* Отступ между надписью и кнопкой */
