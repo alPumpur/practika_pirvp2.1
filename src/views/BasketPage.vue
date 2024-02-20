@@ -1,22 +1,28 @@
 <template>
+  <h1 class="title-basket">Корзина</h1>
   <div class="cart">
-    <div v-for="item in cartItems" :key="item.id" class="order-card">
-      <img class="product_image" :src="item.image" :alt="item.name">
-      <div class="order-details">
-        <p>{{ item.name }}</p>
-        <p>Цена: {{ item.price }}</p>
-        <p>Количество: {{ item.quantity }}</p>
-      </div>
-      <div class="buttons">
-        <button @click="increaseQuantity(item.id)">+</button>
-        <button @click="decreaseQuantity(item.id)">-</button>
-        <button @click="removeFromCart(item.id)">Удалить</button>
-      </div>
+    <div v-if="cartItems.length === 0">
+      <p>Ваша корзина пуста.</p>
     </div>
-    <div class="footer">
-      <p class="total">Общая стоимость: {{ total }}</p>
-      <button @click="checkout" class="checkout-btn">Оформить заказ</button>
-      <router-link to="/" class="back-link">Назад</router-link>
+    <div v-else>
+      <div v-for="item in cartItems" :key="item.id" class="order-card">
+        <img class="product_image" :src="item.image" :alt="item.name">
+        <div class="order-details">
+          <p>{{ item.name }}</p>
+          <p>Цена: {{ item.price }}</p>
+          <p>Количество: {{ item.quantity }}</p>
+        </div>
+        <div class="buttons">
+          <button @click="increaseQuantity(item.id)">+</button>
+          <button @click="decreaseQuantity(item.id)">-</button>
+          <button @click="removeFromCart(item.id)">Удалить</button>
+        </div>
+      </div>
+      <div class="footer">
+        <p class="total">Общая стоимость: {{ total }}</p>
+        <button @click="activateOrderPage" class="checkout-btn">Оформить заказ</button>
+        <router-link to="/" class="back-link">Назад</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +35,7 @@ import { useRouter } from 'vue-router';
 const store = useStore();
 const router = useRouter();
 
-const cartItems = computed(() => store.state.cartItems);
+const cartItems = computed(() => store.state.cartItems || []);
 const total = computed(() => {
   return cartItems.value.reduce((acc, item) => acc + item.price * item.quantity, 0);
 });
@@ -46,12 +52,11 @@ const removeFromCart = (itemId) => {
   store.commit('removeFromCart', itemId);
 };
 
-const checkout = () => {
-  // Здесь можно добавить логику оформления заказа
+const activateOrderPage = () => {
+  store.commit('setOrderPageActive', true);
   router.push('/orders');
 };
 </script>
-
 <style scoped>
 .cart {
   display: flex;
@@ -71,10 +76,15 @@ const checkout = () => {
   align-items: center;
   gap: 20px;
   width: 500px;
+  margin-bottom: 15px;
 }
 
 .product_image {
   max-width: 150px;
+}
+
+.title-basket{
+  color: #8B4513;
 }
 
 .order-details {

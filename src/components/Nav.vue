@@ -2,7 +2,6 @@
   <div class="nav-block">
     <nav class="nav-list">
       <item @click="$router.push('/')">Каталог</item>
-      <item v-if="isAuthenticated" @click="$router.push('/order')">Оформленные товары</item>
       <item @click="$router.push('/basket')">Корзина ({{ totalItemsInCart }})</item>
     </nav>
     <div>
