@@ -24,24 +24,24 @@ const isClient = computed(() => store.state.userRole === 'Client');
 const products = ref([
   {
     id: 1,
-    name: 'ryzen 7 7800',
-    description: '8 ядер 16 потоков',
-    price: 16000,
-    image: 'https://main-cdn.sbermegamarket.ru/big1/hlr-system/-63/482/592/633/152/1/100028082023b0.jpg'
+    name: 'Маска для волос и филлер',
+    description: 'Питательный набор от Lador для волос',
+    price: 2600,
+    image: 'https://maskshop.ru/images/blog/lador_eco_professional/Lador_Lpp_Shampoo.jpg'
   },
   {
     id: 2,
-    name: 'gigabyte 3070',
-    description: '12gb ram 2034mZh',
-    price: 35000,
-    image: 'https://allsoft.ru/upload/medialibrary/24d/24d13c5e6b8c850dcdac48148755fd4b.jpeg'
+    name: 'Гели для душа Lador',
+    description: 'Увлажняющие гели для душа от Lador',
+    price: 4000,
+    image: 'https://lador-store.ru/images/brands/774/block-1.jpg'
   },
   {
     id: 3,
-    name: 'msi b550 gaming plus',
-    description: 'AM4 ddr4 4200mZh',
-    price: 15000,
-    image: 'https://ir.ozone.ru/s3/multimedia-w/c1000/6286686428.jpg'
+    name: 'Шампунь для волос Lador',
+    description: 'Шампунь для волос без силиконов увлажняющий',
+    price: 1500,
+    image: 'https://unboxshop.ru/upload/resize_cache/iblock/097/1200_1200_140cd750bba9870f18aada2478b24840a/1qfq54slwit78z2ble55524vri8s3sdn.jpg'
   },
 ]);
 
