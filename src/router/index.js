@@ -1,39 +1,46 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import CatalogPage from "@/views/CatalogPage.vue";
-import OrderPage from '@/views/OrderPage.vue';
-import BasketPage from "@/views/BasketPage.vue";
-import LoginPage from "@/views/LoginPage.vue";
-import RegistrationPage from "@/views/RegistrationPage.vue";
+
+const routes = [
+  {
+    path: '/',
+    name: 'products',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/ProductsView.vue')
+    }
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/CartView.vue')
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
+    }
+  },
+  {
+    path: '/registration',
+    name: 'registration',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/RegistrationView.vue')
+    }
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/OrderView.vue')
+    }
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'catalog',
-      component: CatalogPage
-    },
-    {
-      path: '/orders',
-      name: 'orders',
-      component: OrderPage
-    },
-    {
-      path: '/basket',
-      name: 'basket',
-      component: BasketPage
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginPage
-    },
-    {
-      path: '/registration',
-      name: 'registration',
-      component: RegistrationPage
-    },
-  ]
+  routes
 })
 
 export default router

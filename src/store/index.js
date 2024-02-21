@@ -1,128 +1,118 @@
-// store/index.js
-import { createStore } from 'vuex';
-import api from '@/services/api'; // Импортировать ваш сервис API
+import index, { createStore } from 'vuex'
+import axios from "axios";
 
-const store = createStore({
-  state() {
-    return {
-      currentUser: null,
-      isAuthenticated: true, // Добавить флаг авторизации и установить по умолчанию как false
-      orders: [],
-      cartItems: [],
-      checkoutEnabled: false,
-      orderPageActive: false
-    };
+export default createStore({
+  state: {
+    products: [],
+    realCart: [],
+    orders: [],
+    fio: '',
+    email: '',
+    password: '',
+    user_token: null,
+    user_auth: false
+  },
+  getters: {
   },
   mutations: {
-    setOrderPageActive(state, isActive) {
-      state.orderPageActive = isActive;
-    },
-    registerUser(state, userData) {
-      state.isAuthenticated = true;
-      state.currentUser = userData;
-    },
-    updateCheckoutStatus(state, status) {
-      state.checkoutEnabled = status;
-    },
-    addToCart(state, newItem) {
-      const existingItemIndex = state.cartItems.findIndex(item => item.id === newItem.id);
-      if (existingItemIndex !== -1) {
-        // Если товар уже есть в корзине, увеличиваем его количество
-        state.cartItems[existingItemIndex].quantity++;
-      } else {
-        // Если товара нет в корзине, добавляем его
-        newItem.quantity = 1; // Устанавливаем количество товара в 1
-        state.cartItems.push(newItem);
+    addToCart(state, product){
+      let item = product;
+      item = {...item, quantity: 1};
+      if(state.realCart.length > 0){
+        let bool = state.realCart.some(i => i.id === item.id);
+        if(bool){
+          let itemIndex = state.realCart.findIndex(el => el.id === item.id);
+          state.realCart[itemIndex]['quantity'] += 1;
+        }
+        else{
+          state.realCart.push(item);
+        }
+      }
+      else{
+        state.realCart.push(item);
       }
     },
-    // Мутация для удаления товара из корзины
-    removeFromCart(state, itemId) {
-      state.cartItems = state.cartItems.filter(item => item.id !== itemId);
-    },
-    addOrder(state, order) {
-      // Добавляем поле cartItems в объект order перед добавлением в список заказов
-      order.cartItems = state.cartItems;
-      state.orders.push(order);
-    },
-    // Мутация для очистки корзины
-    clearCart(state) {
-      state.cartItems = [];
-    },
-    // Мутация для увеличения количества товара в корзине
-    increaseQuantity(state, itemId) {
-      const item = state.cartItems.find(item => item.id === itemId);
-      if (item) {
-        item.quantity++;
-        // Обновляем состояние с помощью Vue.set
-        state.cartItems = [...state.cartItems];
+    removeFromCart(state, product){
+      if(state.realCart.length > 0){
+        let bool = state.realCart.some(i => i.id === product.id);
+
+        if(bool){
+          let index = state.realCart.findIndex(el => el.id === product.id);
+          if(state.realCart[index]['quantity'] !== 0){
+            state.realCart[index]['quantity'] -= 1;
+          }
+        }
+
       }
     },
-    // Мутация для уменьшения количества товара в корзине
-    decreaseQuantity(state, itemId) {
-      const item = state.cartItems.find(item => item.id === itemId);
-      if (item && item.quantity > 1) {
-        item.quantity--;
-        // Обновляем состояние с помощью Vue.set
-        state.cartItems = [...state.cartItems];
+    delFromCart(state, product){
+      let indexCart = state.realCart.indexOf(product);
+      state.realCart.splice(indexCart, 1);
+    },
+    orderCreate(state){
+      let newOrders = state.realCart.map(item => ({...item}));
+      state.orders.push(newOrders);
+      state.realCart.splice(0, state.realCart.length);
+      console.log(state.orders);
+    },
+    async fetchProducts(state){
+      const {data} = await axios.get('https://jurapro.bhuser.ru/api-shop/products')
+          .then(response => state.products = response.data)
+          .catch(error =>{console.log(error)})
+      state.products = data;
+
+      // console.log(data);
+    },
+    async login(state){
+
+      let userInfo = {
+        email: state.email,
+        password: state.password
+      }
+
+      const data = await axios.post('https://jurapro.bhuser.ru/api-shop/login', userInfo)
+          .then(function(response) {
+            state.user_token = response.data.data.user_token;
+            localStorage.token = state.user_token;
+          })
+          .catch(error =>{console.log(error)})
+
+      console.log(data);
+      console.log(state.user_token);
+
+      if(localStorage.token !== undefined && localStorage.token !== null){
+        window.location.href = "/";
       }
     },
-    setUser(state, token) {
-      state.isAuthenticated = true; // Устанавливаем флаг как true при успешной авторизации
-      state.currentUser = token;
+    async registration(state){
+
+      let userInfo = {
+        fio: state.fio,
+        email: state.email,
+        password: state.password
+      }
+
+      const data = await axios.post('https://jurapro.bhuser.ru/api-shop/signup', userInfo)
+          .then(function (response) {
+            console.log(response);
+            state.user_token = response.data.data.user_token;
+            localStorage.token = state.user_token;
+          })
+          .catch(error =>{console.log(error)})
+      console.log(data)
+      console.log(state.user_token)
+
+      if(localStorage.token !== undefined && localStorage.token !== null){
+        window.location.href = "/login";
+      }
     },
-    clearUser(state) {
-      state.isAuthenticated = false; // Сбрасываем флаг при выходе пользователя
-      state.currentUser = null;
+    logout(state){
+      state.user_token = null;
+      localStorage.clear();
     }
   },
   actions: {
-    // Действие для увеличения количества товара в корзине
-    async increaseQuantity({ commit }, itemId) {
-      commit('increaseQuantity', itemId);
-    },
-    // Действие для уменьшения количества товара в корзине
-    async decreaseQuantity({ commit }, itemId) {
-      commit('decreaseQuantity', itemId);
-    },
-    async registerUser({ commit }, user) {
-      try {
-        const registeredUser = await api.register(user); // Использовать сервис API для регистрации
-        commit('setUser', registeredUser); // Сохраняем данные зарегистрированного пользователя
-        return registeredUser; // Возвращаем данные зарегистрированного пользователя
-      } catch (error) {
-        console.error('Ошибка регистрации:', error);
-        throw error;
-      }
-    },
-    async loginUser({ commit }, user) {
-      try {
-        const authenticatedUser = await api.login(user); // Использовать сервис API для аутентификации
-        commit('setUser', authenticatedUser); // Устанавливаем пользователя в хранилище
-        return authenticatedUser; // Возвращаем аутентифицированного пользователя
-      } catch (error) {
-        console.error('Ошибка входа:', error);
-        throw error;
-      }
-    },
-    logoutUser({ commit }) {
-      commit('clearUser');
-    },
-    async addToCart({ commit }, newItem) {
-      commit('addToCart', newItem);
-    },
-    async removeFromCart({ commit }, itemId) {
-      commit('removeFromCart', itemId);
-    },
-    async placeOrder({ commit, state }) {
-      try {
-        const order = await api.placeOrder(state.cartItems);
-        commit('addOrder', order);
-        commit('clearCart');
-      } catch (error) {
-        console.error('Ошибка размещения заказа:', error);
-        throw error;
-      }
-    }
   },
-});
-export default store;
+  modules: {
+  }
+})
