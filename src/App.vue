@@ -1,22 +1,37 @@
-<script setup>
-import { RouterView } from 'vue-router'
-import Header from "@/components/Header.vue";
-</script>
-
 <template>
-  <Header></Header>
-  <div class="page">
-
-    <RouterView />
-  </div>
+  <router-view/>
 </template>
 
-<style scoped>
-.page{
-  background: #FFFAF0;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 20px; /* Если нужен внутренний отступ */
+<script>
+import store from "@/store";
+export default {
+  computed: {
+    store() {
+      return store
+    }
+  },
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
 </style>
