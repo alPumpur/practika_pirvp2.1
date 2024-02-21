@@ -24,7 +24,7 @@
         <h3>{{ product.name }}</h3>
         <p>{{ product.description }}</p>
         <p>Цена: {{ product.price }}</p>
-        <button @click="store.commit('addToCart', product)" v-show="store.state.user_token !== null" style="background-color: #8B4513;">Добавить в корзину</button>
+        <button @click="store.commit('addToCart', product)" v-show="store.state.user_token !== null" class="button-cart">Добавить в корзину</button>
       </div>
     </div>
   </div>
@@ -56,6 +56,11 @@ export default {
   padding: 20px;
   border-radius: 10px;
 }
+
+.button-cart{
+  background-color: #8B4513
+}
+
 .nav-links .link {
   color: #8B4513;
   width: 100px;
