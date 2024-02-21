@@ -6,7 +6,7 @@
       <router-link to="/order" class="cartButton" v-show="store.state.realCart.length > 0" @click="store.commit('orderCreate')">Оформить заказ</router-link>
     </div>
     <div v-show="store.state.realCart.length === 0">
-      <h2 class="msg">На данный момент товары в корзине отсутствуют!</h2>
+      <h2 class="msg">Вы еще ничего не добавили :(</h2>
     </div>
     <div class="order-card" v-for="(item, index) in store.state.realCart" :key="item.id">
       <div class="order-details">
@@ -47,7 +47,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: #FAEBD7;
+  background-color: #FDF5E6;
   border-radius: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -63,6 +63,7 @@ export default {
 
 .msg{
   margin-top: 100px;
+  color: #8B4513;
 }
 .order-card {
   width: 100%;

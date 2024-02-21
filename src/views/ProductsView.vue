@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 .products{
-  background-color: #FAEBD7;
+  background-color:#FDF5E6;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -68,7 +68,7 @@ export default {
 }
 
 .link {
-
+  font-size: 18px;
 }
 
 .nav-links .link:hover {

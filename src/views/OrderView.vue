@@ -66,7 +66,7 @@ export default {
   max-width: 1200px;
   width: 100%;
   padding: 0 20px;
-  background-color: #FAEBD7;
+  background-color: #FDF5E6;
 }
 
 .order-header {

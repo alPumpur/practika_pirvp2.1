@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 .registration-container {
-  background-color: #FAEBD7;
+  background-color: #FDF5E6;
   border-radius: 20px;
   padding: 20px;
   width: 1600px;
