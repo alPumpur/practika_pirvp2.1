@@ -1,23 +1,25 @@
 <template>
   <div class="cart">
-    <h2>Товары в корзине:</h2>
+    <h2 class="text">Корзина</h2>
     <div class="cart-header">
       <router-link class="prevPage" to="/">Назад</router-link>
-      <a href="#" class="cartButton" v-show="store.state.realCart.length > 0" @click="store.commit('orderCreate')">Оформить заказ</a>
+      <router-link to="/order" class="cartButton" v-show="store.state.realCart.length > 0" @click="store.commit('orderCreate')">Оформить заказ</router-link>
     </div>
     <div v-show="store.state.realCart.length === 0">
-      <h2 class="msg">{ На данный момент товары в корзине отсутствуют! ]</h2>
+      <h2 class="msg">На данный момент товары в корзине отсутствуют!</h2>
     </div>
-    <div class="item" v-for="(item, index) in store.state.realCart" :key="item.id">
-      <p>Название: {{ item.name }}</p>
-      <p>Описание: {{ item.description }}</p>
-      <p>Цена: {{ item.price }}</p>
-      <div class="quantityItem">
-        <button @click="store.commit('removeFromCart', item)" :disabled="item.quantity === 1">-</button>
-        <p>Количество: {{ item.quantity }}</p>
-        <button @click="store.commit('addToCart', item)">+</button>
+    <div class="order-card" v-for="(item, index) in store.state.realCart" :key="item.id">
+      <div class="order-details">
+        <p>Название: {{ item.name }}</p>
+        <p>Описание: {{ item.description }}</p>
+        <p>Цена: {{ item.price }}</p>
+        <div class="quantityItem">
+          <button @click="store.commit('removeFromCart', item)" :disabled="item.quantity === 1" class="quantityButton">-</button>
+          <p>Количество: {{ item.quantity }}</p>
+          <button @click="store.commit('addToCart', item)" class="quantityButton">+</button>
+        </div>
+        <button class="deleteButton" @click="store.commit('delFromCart', item)">Удалить товар</button>
       </div>
-      <button class="deleteButton" @click="store.commit('delFromCart', item)">Удалить товар</button>
     </div>
   </div>
 </template>
@@ -32,7 +34,6 @@ export default {
     }
   },
 }
-
 </script>
 
 <style scoped>
@@ -40,35 +41,40 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px
+  margin-bottom: 20px;
 }
 .cart{
   display: flex;
   flex-direction: column;
+  padding: 20px;
+  background-color: #FAEBD7;
+  border-radius: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
+.text{
+  color: white;
+  background-color: #8B4513;
+  width: 120px;
+  border-radius: 10px;
+  padding: 10px 10px 10px 30px;
+}
+
 .msg{
   margin-top: 100px;
 }
-.item{
-  flex: 0 1 100%;
-  height: 400px;
-  border: 1px solid black;
-  border-radius: 5px;
+.order-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
-.item:not(:last-child){
-  margin-bottom: 10px;
-}
-.cartButton{
-  font-size: 18px;
-  color: aliceblue;
-  text-decoration: none;
-  align-items: center;
-  justify-content: center;
-  background-color: #42b983;
-  display: flex;
-  width: 160px;
-  height: 50px;
-  border-radius: 5px;
+.order-details{
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .quantityItem{
   margin: 0 auto;
@@ -78,25 +84,63 @@ export default {
   align-items: center;
 }
 .prevPage{
-  font-size: 18px;
-  color: aliceblue;
+  font-size: 16px;
+  color: #FFFFFF;
   text-decoration: none;
   align-items: center;
   justify-content: center;
-  background-color: #42b983;
+  background-color: #A0522D;
   display: flex;
-  width: 160px;
+  width: 130px;
   height: 45px;
   border-radius: 5px;
 }
+
+.prevPage:hover {
+  background-color: #f4a460;
+}
+
+.cartButton{
+  font-size: 16px;
+  color: #FFFFFF;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  background-color: #A0522D;
+  display: flex;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+}
 .deleteButton{
-  margin-bottom: 10px;
-  color: #c9d8e5;
+  margin-top: 10px;
+  color: #FFFFFF;
   border-radius: 7px;
   border: 0;
   font-size: 15px;
-  width: 120px;
+  width: 130px;
   height: 50px;
-  background-color: #ff2c2c;
+  background-color: #A0522D;
+  transition: background-color 0.3s;
+  margin-left: 110px;
+}
+
+.deleteButton:hover {
+  background-color: #D2691E;
+}
+.quantityButton {
+  width: 25px;
+  height: 25px;
+  background-color: #CD853F;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quantityButton:hover {
+  background-color: #8B4513;
 }
 </style>

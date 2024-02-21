@@ -12,8 +12,6 @@ export default createStore({
     user_token: null,
     user_auth: false
   },
-  getters: {
-  },
   mutations: {
     addToCart(state, product){
       let item = product;
@@ -60,16 +58,12 @@ export default createStore({
           .then(response => state.products = response.data)
           .catch(error =>{console.log(error)})
       state.products = data;
-
-      // console.log(data);
     },
     async login(state){
-
       let userInfo = {
         email: state.email,
         password: state.password
       }
-
       const data = await axios.post('https://jurapro.bhuser.ru/api-shop/login', userInfo)
           .then(function(response) {
             state.user_token = response.data.data.user_token;
@@ -85,13 +79,11 @@ export default createStore({
       }
     },
     async registration(state){
-
       let userInfo = {
         fio: state.fio,
         email: state.email,
         password: state.password
       }
-
       const data = await axios.post('https://jurapro.bhuser.ru/api-shop/signup', userInfo)
           .then(function (response) {
             console.log(response);
@@ -111,8 +103,4 @@ export default createStore({
       localStorage.clear();
     }
   },
-  actions: {
-  },
-  modules: {
-  }
 })

@@ -1,16 +1,18 @@
 <template>
-  <div class="form-header">
-    <router-link class="prevPage" to="/">Назад</router-link>
+  <div class="registration-container">
+    <div class="form-header">
+      <router-link class="exit-button" to="/">Назад</router-link>
+    </div>
+    <form @submit.prevent="store.commit('registration')" class="registration-form">
+      <label style="color: #8B4513;">Ваше имя: </label>
+      <input type="text" required v-model="store.state.fio">
+      <label style="color: #8B4513;">Электронная почта: </label>
+      <input type="email" required v-model="store.state.email">
+      <label style="color: #8B4513;">Пароль: </label>
+      <input type="password" required v-model="store.state.password">
+      <input type="submit" value="Регистрация">
+    </form>
   </div>
-  <form @submit.prevent="store.commit('registration')">
-    <label>ФИО: </label>
-    <input type="text" required v-model="store.state.fio">
-    <label>Эл. почта: </label>
-    <input type="email" required v-model="store.state.email">
-    <label>Пароль: </label>
-    <input type="password" required v-model="store.state.password">
-    <input type="submit" value="Регистрация">
-  </form>
 </template>
 
 <script>
@@ -26,39 +28,63 @@ export default {
 </script>
 
 <style scoped>
-form{
+.registration-container {
+  background-color: #FAEBD7;
+  border-radius: 20px;
+  padding: 20px;
+  width: 1600px;
+  margin: 0 auto;
+}
+
+.form-header {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 10px;
+}
+
+.registration-form {
+  background-color: #FFFFFF;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+}
+
+form {
   flex-direction: column;
   justify-content: center;
   width: 400px;
   margin: 0 auto;
   display: flex;
 }
-input{
+
+input {
   font-size: 18px;
   height: 25px;
 }
-input:not(:last-child){
+
+input:not(:last-child) {
   margin-bottom: 20px;
 }
-input[type=submit]{
+
+input[type=submit] {
   cursor: pointer;
   color: aliceblue;
   border-radius: 8px;
   border: none;
-  background-color: #42b983;
+  background-color: #A0522D;
   width: 150px;
   height: 40px;
   margin: 0 auto;
 }
-.prevPage{
+
+.exit-button {
   font-size: 18px;
   color: aliceblue;
   text-decoration: none;
   align-items: center;
   justify-content: center;
-  background-color: #42b983;
+  background-color: #A0522D;
   display: flex;
-  width: 160px;
+  width: 100px;
   height: 45px;
   border-radius: 5px;
 }
