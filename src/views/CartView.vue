@@ -124,14 +124,15 @@ export default {
   background-color: #A0522D;
   transition: background-color 0.3s;
   margin-left: 110px;
+  font-family: FreeMono, monospace;
 }
 
 .deleteButton:hover {
   background-color: #D2691E;
 }
 .quantityButton {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   background-color: #CD853F;
   color: white;
   border: none;

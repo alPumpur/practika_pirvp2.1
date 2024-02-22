@@ -6,7 +6,7 @@
         <router-link class="prevPage" to="/">Назад</router-link>
       </div>
       <div v-show="store.state.orders.length === 0">
-        <h2 class="msg">На данный момент у вас нет заказов!</h2>
+        <h2 class="msg">Еще нет заказов, перейдите в корзину и оформите!</h2>
       </div>
       <div class="order" v-for="order in store.state.orders" :key="order.id">
         <div class="order-block">
@@ -127,5 +127,6 @@ export default {
 
 .msg {
   margin-top: 100px;
+  color: #8B4513;
 }
 </style>

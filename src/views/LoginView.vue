@@ -72,6 +72,8 @@ input[type=submit] {
   width: 150px;
   height: 40px;
   margin: 0 auto;
+  font-family: FreeMono, monospace;
+  font-size: 19px;
 }
 
 .exit-button {

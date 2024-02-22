@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 .products{
-  background-color:#FDF5E6;
+  background-color: #FDF5E6;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -96,11 +96,11 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 7px 10px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
 }
 .product:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 20px 0 rgba(0, 0, 0, 0.2);
 }
 .product h3, .product p, .product button {
   padding: 10px;
@@ -114,9 +114,12 @@ export default {
   color: white;
   border: none;
   cursor: pointer;
+  font-family: FreeMono, monospace;
+  border-radius: 5px;
+  font-size: 15px;
 }
 .product button:hover {
-  background-color: #F5DEB3;
+  background-color: #A0522D;
 }
 
 .top-buttons{
