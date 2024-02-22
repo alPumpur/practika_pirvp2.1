@@ -116,9 +116,9 @@ export default {
   justify-content: center;
   background-color: #8B4513;
   display: flex;
-  width: 130px;
-  height: 45px;
-  border-radius: 5px;
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
 }
 
 .prevPage:hover {

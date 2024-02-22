@@ -67,7 +67,7 @@ input:not(:last-child) {
 
 input[type=submit] {
   cursor: pointer;
-  color: aliceblue;
+  color: white;
   border-radius: 8px;
   border: none;
   background-color: #A0522D;
