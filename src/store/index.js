@@ -6,6 +6,7 @@ export default createStore({
     products: [],
     realCart: [],
     orders: [],
+    cartItems: [],
     fio: '',
     email: '',
     password: '',
@@ -13,6 +14,7 @@ export default createStore({
     user_auth: false
   },
   mutations: {
+
     addToCart(state, product){
       let item = product;
       item = {...item, quantity: 1};
@@ -53,6 +55,13 @@ export default createStore({
       state.realCart.splice(0, state.realCart.length);
       console.log(state.orders);
     },
+
+
+    setCartItems(state, cartItems) {
+      state.cartItems = cartItems;
+    },
+
+
     async fetchProducts(state){
       const {data} = await axios.get('https://jurapro.bhuser.ru/api-shop/products')
           .then(response => state.products = response.data)
@@ -103,4 +112,31 @@ export default createStore({
       localStorage.clear();
     }
   },
+  actions: {
+    async fetchCartItems({ commit }) {
+      try {
+        const response = await axios.get('https://jurapro.bhuser.ru/api-shop/cart');
+        const cartItems = response.data.data;
+        commit('setCartItems', cartItems);
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    },
+    async addToCart({ commit }, product) {
+      try {
+        const response = await axios.post(`https://jurapro.bhuser.ru/api-shop/cart/{product.id}`);
+        console.log('Добавление товара в корзину');
+        console.log('URL:', response.config.url);
+        console.log('Method:', response.config.method);
+        console.log('Успех');
+        console.log('Status:', response.status);
+        console.log('Content-Type:', response.headers['content-type']);
+        console.log('Body:', response.data);
+        // выполните мутацию для добавления товара в состояние корзины, если это необходимо
+        commit('addToCart', product);
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+      }
+    }
+  }
 })

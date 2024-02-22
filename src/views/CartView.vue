@@ -26,13 +26,20 @@
 
 <script>
 import store from "@/store";
-
+import { mapState, mapActions } from 'vuex';
 export default {
   computed: {
     store() {
       return store
-    }
+    },
+    ...mapState(['cartItems'])
   },
+  methods: {
+    ...mapActions(['fetchCartItems', 'addToCart'])
+  },
+  mounted() {
+    this.fetchCartItems();
+  }
 }
 </script>
 
