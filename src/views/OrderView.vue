@@ -1,132 +1,113 @@
 <template>
   <div class="orders-container">
-    <div class="orders">
-      <h2 class="text">Оформленные заказы</h2>
-      <div class="order-header">
-        <router-link class="prevPage" to="/">Назад</router-link>
-      </div>
-      <div v-show="store.state.orders.length === 0">
-        <h2 class="msg">Еще нет заказов, перейдите в корзину и оформите!</h2>
-      </div>
-      <div class="order" v-for="order in store.state.orders" :key="order.id">
-        <div class="order-block">
-          <div class="order-card">
-            <div class="order-details">
-              <div class="product" v-for="product in order" :key="product.id">
-                <p><b>{{ product.name }}</b></p>
-                <p><b>Описание:</b> {{ product.description }}</p>
-                <p><b>Количество:</b> {{ product.quantity }}</p>
-                <p><b>Цена:</b> {{ product.price * product.quantity }}</p>
-              </div>
-              <p><b>Цена заказа: {{ calculateTotalPrice(order) }}</b></p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <h2>Your Orders:</h2>
+    <div class="order-header">
+      <router-link class="prev-link" to="/">Go Back</router-link>
+    </div>
+    <div v-show="orderList.length === 0">
+      <h2 class="no-orders-msg">You have no orders at the moment.</h2>
+    </div>
+    <div class="order" v-for="order in orderList" :key="order.id">
+      <ul>
+        <li v-for="productId in order.products" :key="productId">
+          {{ getProductName(productId) }}
+        </li>
+      </ul>
+      <hr>
+      <p><strong>Total: {{ fullPrice(order) }}</strong></p>
     </div>
   </div>
-</template>
-
-<script>
-import store from "@/store";
+</template><script>
+import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
   computed: {
-    store() {
-      return store;
-    }
+    ...mapState(["orderList", "user_token"]),
+  },
+  created() {
+    this.$store.dispatch("orderIn");
   },
   methods: {
-    calculateTotalPrice(order) {
-      let totalPrice = 0;
-      for (let i = 0; i < order.length; i++) {
-        totalPrice += order[i].price * order[i].quantity;
+    async getProductName(productId) {
+      try {
+        const response = await axios.get(
+            `https://jurapro.bhuser.ru/api-shop/products/${productId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${this.user_token}`,
+              },
+            }
+        );
+        return response.data.data.name;
+      } catch (error) {
+        console.log(error);
+        return "Product Name Unavailable"; // Provide a default name or handle the error gracefully
       }
-      return totalPrice;
-    }
-  }
-}
+    },
+    fullPrice(order) {
+      if (!order || !order.products) {
+        return 0;
+      }
+      return order.products.reduce(
+          (total, product) => total + product.price * product.quantity,
+          0
+      );
+    },
+  },
+};
 </script>
 
 <style scoped>
 .orders-container {
   display: flex;
-  justify-content: center;
-}
-
-.text{
-  color: white;
-  background-color: #8B4513;
-  width: 300px;
-  border-radius: 10px;
-  padding: 10px 10px 10px 30px;
-}
-
-.orders {
-  max-width: 1200px;
-  width: 100%;
-  padding: 0 20px;
-  background-color: #FDF5E6;
+  flex-direction: column;
+  align-items: center;
+  color: #4b0082;
 }
 
 .order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
 }
 
 .order {
+  border: 1px solid #8a2be2;
+  border-radius: 8px;
+  width: 80%;
+  padding: 20px 40px 20px 20px;
   margin-bottom: 40px;
-}
-
-.order-block {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 500px;
-  margin-left: 370px;
-}
-
-.order-card {
-  max-width: 400px;
-  margin: 0 auto;
-  margin-bottom: 20px;
-}
-
-.order-details {
-  padding: 20px;
+  background-color: #e6e6fa;
 }
 
 .product {
-  border: 1px solid black;
-  border-radius: 5px;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid #8a2be2;
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #d8bfd8;
 }
 
-.prevPage {
-  font-size: 16px;
-  color: #ffffff;
+.prev-link {
+  font-size: 18px;
+  color: #fff;
   text-decoration: none;
-  align-items: center;
-  justify-content: center;
-  background-color: #8B4513;
-  display: flex;
-  width: 100px;
-  height: 40px;
-  border-radius: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #8a2be2;
+  transition: background-color 0.3s ease;
 }
 
-.prevPage:hover {
-  background-color: #f4a460;
+.prev-link:hover {
+  background-color: #9400d3;
 }
 
-.msg {
+.prev-link:active {
+  background-color: #6a5acd;
+}
+
+.no-orders-msg {
   margin-top: 100px;
-  color: #8B4513;
+  font-style: italic;
 }
 </style>

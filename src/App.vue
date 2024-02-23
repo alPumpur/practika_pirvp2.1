@@ -1,5 +1,8 @@
 <template>
-  <router-view/>
+  <router-view :cart="cart" @update:cart="cart = $event" />
+  <router-view v-slot="{ CartPage }">
+    <component :is="CartPage" v-if="CartPage" />
+  </router-view>
 </template>
 
 <script>
@@ -15,12 +18,23 @@ export default {
 
 <style>
 #app {
-  font-family: FreeMono, monospace;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: justify;
+  text-align: center;
   color: #2c3e50;
 }
 
+nav {
+  padding: 30px;
+}
 
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
 </style>

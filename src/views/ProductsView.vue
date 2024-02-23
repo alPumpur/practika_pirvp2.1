@@ -1,30 +1,30 @@
 <template>
-  <div class="products">
-    <div class="top-buttons">
-      <nav class="top-buttons">
-        <p class="nav-links" v-show="store.state.user_token === null">
-          <router-link to="/registration" class="link">Регистрация</router-link>
-        </p>
-        <p class="nav-links" v-show="store.state.user_token === null">
-          <router-link to="/login" class="link">Войти в аккаунт</router-link>
-        </p>
-        <p class="nav-links" v-show="store.state.user_token !== null">
-          <router-link to="/cart" class="link">Корзина</router-link>
-        </p>
-        <p class="nav-links" v-show="store.state.user_token !== null">
-          <router-link to="/order" class="link">Оформленные заказы</router-link>
-        </p>
-        <p class="nav-links" v-show="store.state.user_token !== null">
-          <a href="#" @click="store.commit('logout')" class="link">Выйти из аккаунта</a>
-        </p>
-      </nav>
-    </div>
+  <div class="product-container">
+    <nav>
+      <p v-show="store.state.user_token === null" class="nav-item">
+        <router-link to="/registration">Регистрация</router-link>
+      </p>
+      <p v-show="store.state.user_token === null" class="nav-item">
+        <router-link to="/login">Войти в аккаунт</router-link>
+      </p>
+      <p v-show="store.state.user_token !== null" class="nav-item">
+        <router-link to="/cart">Корзина</router-link>
+      </p>
+      <p v-show="store.state.user_token !== null" class="nav-item">
+        <router-link to="/order">Оформленные заказы</router-link>
+      </p>
+      <p v-show="store.state.user_token !== null" class="nav-item">
+        <a href="#" @click="store.commit('logout')">Выйти из аккаунта</a>
+      </p>
+    </nav>
     <div class="product-list">
-      <div class="product" v-for="(product, index) in store.state.products" :key="product.id">
-        <h3>{{ product.name }}</h3>
-        <p>{{ product.description }}</p>
-        <p>Цена: {{ product.price }}</p>
-        <button @click="store.commit('addToCart', product)" v-show="store.state.user_token !== null" class="button-cart">Добавить в корзину</button>
+      <div class="product" v-for="item in this.store.state.products">
+        <h3>{{ item.name }}</h3>
+        <p><strong>Описание:</strong> {{ item.description }}</p>
+        <div class="product-price-container">
+          <p class="product-price">{{ item.price }} руб</p>
+        </div>
+        <button class="add-to-cart" @click="addToCart(item)">В корзину</button>
       </div>
     </div>
   </div>
@@ -32,98 +32,117 @@
 
 <script>
 import store from "@/store";
-
 export default {
   computed: {
     store() {
       return store
     }
   },
-  mounted(){
+  methods:{
+    addToCart(product) {
+      this.$store.commit('productCartAdd', product);
+    },
+  },
+  mounted() {
     if (localStorage.token !== undefined && localStorage.token !== null) {
       store.state.user_token = localStorage.token;
     }
-    this.$store.commit('fetchProducts');
+    this.$store.commit('getCatalogProducts');
   },
 }
 </script>
 
+
 <style scoped>
-.products{
-  background-color: #FDF5E6;
+.product-container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
-  border-radius: 10px;
 }
 
-.button-cart{
-  background-color: #8B4513
-}
-
-.nav-links .link {
-  color: #8B4513;
-  width: 100px;
-  height: 70px;
+.nav-item {
+  background-color: #7e349d;
+  height: 40px;
   border-radius: 10px;
   margin: 0;
-  padding: 20px 30px 20px 30px;
-  margin-right: 20px;
-  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  transition: background-color 0.3s ease;
 }
 
-.link {
-  font-size: 18px;
+.nav-item * {
+  text-decoration: none;
+  color: #fff;
 }
 
-.nav-links .link:hover {
-  background-color: #8B4513;
-  color: white;
+.nav-item:hover {
+  background-color: #8a2be2;
 }
-.product-list{
+
+.product-list {
   margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.product{
-  border: 1px solid black;
-  border-radius: 5px;
-  width: 350px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  box-shadow: 0 7px 10px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-}
-.product:hover {
-  box-shadow: 0 12px 20px 0 rgba(0, 0, 0, 0.2);
-}
-.product h3, .product p, .product button {
-  padding: 10px;
-  margin: 0;
-}
-.product button{
-  width: 200px;
-  height: 40px;
-  margin-bottom: 30px;
-  background-color: #8B4513;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-family: FreeMono, monospace;
-  border-radius: 5px;
-  font-size: 15px;
-}
-.product button:hover {
-  background-color: #A0522D;
+
+.product {
+  border: 1px solid #8a2be2;
+  border-radius: 8px;
+  width: 30%;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #e6e6fa;
 }
 
-.top-buttons{
-  display: flex;
-  justify-content: center;
+.product h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.product-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.product-price-container {
+  border: 1px solid #8a2be2;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.product-price {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+}
+
+.product-price-container:hover {
+  border-color: #9b59b6;
+}
+
+.add-to-cart {
+  width: 100%;
+  height: 40px;
+  background-color: #8a2be2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #7e349d;
 }
 </style>

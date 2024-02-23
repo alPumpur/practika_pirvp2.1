@@ -1,27 +1,39 @@
 <template>
   <div class="registration-container">
-    <div class="form-header">
-      <router-link class="exit-button" to="/">Назад</router-link>
+    <div class="registration-header">
+      <router-link class="prev-link" to="/">Назад</router-link>
     </div>
     <form @submit.prevent="store.commit('registration')" class="registration-form">
-      <label style="color: #8B4513;">Ваше имя: </label>
-      <input type="text" required v-model="store.state.fio">
-      <label style="color: #8B4513;">Электронная почта: </label>
-      <input type="email" required v-model="store.state.email">
-      <label style="color: #8B4513;">Пароль: </label>
-      <input type="password" required v-model="store.state.password">
-      <input type="submit" value="Регистрация">
+      <label for="fio" class="form-label">ФИО:</label>
+      <input id="fio" type="text" required v-model="store.state.fio" :class="{ 'input-field': true, 'error': !isFioValid }">
+      <p v-if="!isFioValid" class="error-message">Введите корректное ФИО</p>
+      <label for="email" class="form-label">Эл. почта:</label>
+      <input id="email" type="email" required v-model="store.state.email" :class="{ 'input-field': true, 'error': !isEmailValid }">
+      <p v-if="!isEmailValid" class="error-message">Введите корректный адрес электронной почты</p>
+      <label for="password" class="form-label">Пароль:</label>
+      <input id="password" type="password" required v-model="store.state.password" :class="{ 'input-field': true, 'error': !isPasswordValid }">
+      <p v-if="!isPasswordValid" class="error-message">Пароль должен содержать не менее 6 символов</p>
+      <input type="submit" value="Регистрация" class="submit-button">
     </form>
   </div>
 </template>
 
 <script>
 import store from "@/store";
-
 export default {
   computed: {
     store() {
-      return store
+      return store;
+    },
+    isFioValid() {
+      return this.store.state.fio.trim() !== '';
+    },
+    isEmailValid() {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailPattern.test(this.store.state.email);
+    },
+    isPasswordValid() {
+      return this.store.state.password.length >= 6;
     }
   },
 }
@@ -29,65 +41,75 @@ export default {
 
 <style scoped>
 .registration-container {
-  background-color: #FDF5E6;
-  border-radius: 20px;
-  padding: 20px;
-  width: 1600px;
+  max-width: 400px;
   margin: 0 auto;
-}
-
-.form-header {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  padding: 10px;
-}
-
-.registration-form {
-  background-color: #FFFFFF;
   padding: 20px;
-  border-radius: 0 0 20px 20px;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-form {
-  flex-direction: column;
-  justify-content: center;
-  width: 400px;
-  margin: 0 auto;
-  display: flex;
-}
-
-input {
-  font-size: 18px;
-  height: 25px;
-}
-
-input:not(:last-child) {
+.registration-header {
   margin-bottom: 20px;
 }
-
-input[type=submit] {
-  cursor: pointer;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  background-color: #A0522D;
-  width: 150px;
-  height: 40px;
-  margin: 0 auto;
-  font-family: FreeMono, monospace;
-  font-size: 17px;
+.registration-form {
+  display: flex;
+  flex-direction: column;
 }
-
-.exit-button {
-  font-size: 18px;
-  color: aliceblue;
+.form-label {
+  font-size: 22px; /* Увеличенный размер текста для меток */
+  margin-bottom: 5px; /* Немного увеличиваем расстояние между метками и полями */
+}
+.input-field {
+  font-size: 20px;
+  height: 45px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+  background-color: #e6e6fa;
+}
+.input-field:hover {
+  background-color: #d8bfd8;
+}
+.input-field:focus {
+  border-color: #8a2be2;
+}
+.error {
+  border-color: red;
+}
+.error-message {
+  color: red;
+  margin-top: -10px;
+}
+.submit-button {
+  cursor: pointer;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  background-color: #8a2be2;
+  padding: 12px 20px;
+  font-size: 22px; /* Увеличенный размер текста для кнопки */
+  transition: background-color 0.3s ease;
+}
+.submit-button:hover {
+  background-color: #7e349d;
+}
+.prev-link {
+  font-size: 22px;
+  color: #fff;
   text-decoration: none;
   align-items: center;
   justify-content: center;
-  background-color: #A0522D;
+  background-color: #8a2be2;
   display: flex;
-  width: 100px;
-  height: 45px;
+  width: 160px;
+  height: 50px;
   border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-left: 30%;
+}
+.prev-link:hover {
+  background-color: #7e349d;
 }
 </style>

@@ -1,155 +1,211 @@
 <template>
-  <div class="cart">
-    <h2 class="text">Корзина</h2>
+  <div class="cart-container">
     <div class="cart-header">
-      <router-link class="prevPage" to="/">Назад</router-link>
-      <router-link to="/order" class="cartButton" v-show="store.state.realCart.length > 0" @click="store.commit('orderCreate')">Оформить заказ</router-link>
+      <router-link class="back-link" to="/">Вернуться назад</router-link>
     </div>
-    <div v-show="store.state.realCart.length === 0">
-      <h2 class="msg">Вы еще ничего не добавили :(</h2>
+    <div v-show="store.state.cartList.length === 0">
+      <h2 class="empty-msg">Корзина пуста</h2>
     </div>
-    <div class="order-card" v-for="(item, index) in store.state.realCart" :key="item.id">
-      <div class="order-details">
-        <p>Название: {{ item.name }}</p>
-        <p>Описание: {{ item.description }}</p>
-        <p>Цена: {{ item.price }}</p>
-        <div class="quantityItem">
-          <button @click="store.commit('removeFromCart', item)" :disabled="item.quantity === 1" class="quantityButton">-</button>
-          <p>Количество: {{ item.quantity }}</p>
-          <button @click="store.commit('addToCart', item)" class="quantityButton">+</button>
+    <div class="cart-items-container" v-if="store.state.cartList.length > 0">
+      <div class="cart-item" v-for="item in store.state.cartList" :key="item.id">
+        <div class="item-details">
+          <div class="item-info">
+            <p class="item-name">{{ item.name }}</p>
+            <p class="item-description">{{ item.description }}</p>
+            <p class="item-price">Цена: <span class="price">{{ item.price }}</span></p>
+          </div>
+          <div class="quantity-actions">
+            <button class="quantity-button" @click="cartMinus(item)">-</button>
+            <p class="quantity">Количество: <span class="quantity-value">{{ item.quantity }}</span></p>
+            <button class="quantity-button" @click="cartPlus(item)">+</button>
+          </div>
         </div>
-        <button class="deleteButton" @click="store.commit('delFromCart', item)">Удалить товар</button>
+        <button class="delete-button " @click="removeCart(item.id)">Удалить из корзины</button>
       </div>
     </div>
+    <button class="order-button" @click="arrangeOrder" :disabled="store.state.cartList.length === 0">
+      Оформить заказ
+    </button>
   </div>
 </template>
 
 <script>
 import store from "@/store";
-import { mapState, mapActions } from 'vuex';
+
 export default {
   computed: {
     store() {
       return store
+    }
+  },
+  created() {
+    this.$store.commit('fetchCardList');
+  },
+  methods:{
+    removeCart(productId) {
+      this.$store.commit('removeCart', productId);
     },
-    ...mapState(['cartItems'])
-  },
-  methods: {
-    ...mapActions(['fetchCartItems', 'addToCart'])
-  },
-  mounted() {
-    this.fetchCartItems();
+    arrangeOrder() {
+      this.$store.commit('arrangeOrder');
+    },
+    cartMinus(item) {
+      if (item.quantity > 1) {
+        const newQuantity = item.quantity - 1;
+        this.$store.commit('cartMinusPlus', { productId: item.id, newQuantity });
+      }
+    },
+    cartPlus(item) {
+      const newQuantity = item.quantity + 1;
+      this.$store.commit('cartMinusPlus', { productId: item.id, newQuantity });
+    },
   }
 }
 </script>
 
 <style scoped>
-.cart-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.cart{
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  background-color: #FDF5E6;
-  border-radius: 20px;
+.cart-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.text{
-  color: white;
-  background-color: #8B4513;
-  width: 120px;
-  border-radius: 10px;
-  padding: 10px 10px 10px 30px;
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 }
 
-.msg{
-  margin-top: 100px;
-  color: #8B4513;
+.back-link {
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #8a2be2;
+  transition: background-color 0.3s ease;
 }
-.order-card {
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+
+.back-link:hover {
+  background-color: #9400d3;
+}
+
+.back-link:active {
+  background-color: #6a5acd;
+}
+
+.empty-msg {
+  font-size: 24px;
+  color: #6a0dad;
+  text-align: center;
+}
+
+.cart-items-container {
   margin-bottom: 20px;
 }
-.order-details{
+
+.cart-item {
   padding: 20px;
-  background-color: white;
+  background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.quantityItem{
-  margin: 0 auto;
-  width: 170px;
+
+.item-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.prevPage{
-  font-size: 16px;
-  color: #FFFFFF;
-  text-decoration: none;
-  align-items: center;
-  justify-content: center;
-  background-color: #A0522D;
-  display: flex;
-  width: 100px;
-  height: 40px;
-  border-radius: 10px;
+
+.item-info {
+  flex: 1;
 }
 
-.prevPage:hover {
-  background-color: #f4a460;
+.item-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-.cartButton{
-  font-size: 16px;
-  color: #FFFFFF;
-  text-decoration: none;
-  align-items: center;
-  justify-content: center;
-  background-color: #A0522D;
-  display: flex;
-  width: 150px;
-  height: 50px;
-  border-radius: 5px;
-}
-.deleteButton{
-  margin-top: 10px;
-  color: #FFFFFF;
-  border-radius: 7px;
-  border: 0;
-  font-size: 15px;
-  width: 130px;
-  height: 50px;
-  background-color: #A0522D;
-  transition: background-color 0.3s;
-  margin-left: 110px;
-  font-family: FreeMono, monospace;
+.item-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-.deleteButton:hover {
-  background-color: #D2691E;
-}
-.quantityButton {
-  width: 22px;
-  height: 22px;
-  background-color: #CD853F;
-  color: white;
-  border: none;
-  border-radius: 5px;
+.item-price {
   font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-.quantityButton:hover {
-  background-color: #8B4513;
+.price {
+  border: 1px solid #6a0dad;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.quantity-actions {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-button {
+  font-size: 18px;
+  color: #fff;
+  background-color: #8a2be2;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-button:hover {
+  background-color: #9400d3;
+}
+
+.quantity {
+  font-size: 18px;
+  color: #6a0dad;
+  margin: 0 10px;
+}
+
+.quantity-value {
+  color: #6a0dad;
+}
+
+.delete-button {
+  font-size: 18px;
+  color: #fff;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #865dfd;
+}
+
+.order-button {
+  display: block;
+  margin: 0 auto;
+  font-size: 20px;
+  color: #fff;
+  text-decoration: none;
+  background-color: #6a0dad;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+  background-color: #450d5f;
 }
 </style>
