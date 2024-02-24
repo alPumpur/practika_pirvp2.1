@@ -144,6 +144,16 @@ export default createStore({
             localStorage.clear();
             state.cartList = [];
         },
+
+        async getOrders(state){
+            const {data} = await axios.get('https://jurapro.bhuser.ru/api-shop/order',{headers:{Authorization: `Bearer ${state.user_token}`}})
+                .then(response => state.orderList = response.data)
+                .catch(error =>{console.log(error)})
+            state.orderList = data;
+            console.log('Orders checker',state.orderList)
+        },
+
+
         async arrangeOrder(state) {
             const token = state.user_token;
             if (token) {
@@ -172,6 +182,7 @@ export default createStore({
             } else {
                 console.log('User is not authenticated');
             }
+
         },
         setOrders(state, orders) {
             state.orderList = orders;

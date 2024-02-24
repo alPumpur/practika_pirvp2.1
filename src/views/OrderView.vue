@@ -9,68 +9,30 @@
     </div>
     <div class="order" v-for="order in store.state.orderList" :key="order.id">
       <ul>
-        <li class="product" v-for="productId in order.products" :key="productId">
-          <p><strong>{{ store.state.orderList(productId) }}</strong></p>
-          <p><strong>Description:</strong> {{ getProductDescription(productId) }}</p>
-          <p><strong>Quantity:</strong> {{ getProductQuantity(productId) }}</p>
-          <p><strong>Price:</strong> {{ getProductPrice(productId) }}</p>
-        </li>
+          <h3 class="order_number">Заказ: {{order.id}}</h3>
+          <p class="item_split" v-for="item in order.products">
+            <p class="item">Product -{{item}}-</p>
+          </p>
+          <h3 class="order_price">Price: {{order.order_price}}</h3>
       </ul>
-      <hr>
-      <p><strong>Total: {{ fullPrice(order) }}</strong></p>
     </div>
   </div>
 </template>
 
 <script>
 import store from "@/store";
-import axios from "axios";
 
 export default {
   computed: {
     store() {
-      return store;
+      return store
     }
   },
-  methods: {
-    async getProductTitle(productId) {
-      const product = await this.getProduct(productId);
-      return product.title || 'Product Title Unavailable';
-    },
-    async getProductDescription(productId) {
-      const product = await this.getProduct(productId);
-      return product.description || 'Product Description Unavailable';
-    },
-    async getProductQuantity(productId) {
-      const product = await this.getProduct(productId);
-      return product.quantity || 0;
-    },
-    async getProductPrice(productId) {
-      const product = await this.getProduct(productId);
-      return product.price || 0;
-    },
-    async getProduct(productId) {
-      const token = this.store.state.user_token;
-      try {
-        const response = await axios.get(`https://jurapro.bhuser.ru/api-shop/order`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        return response.data.data;
-      } catch (error) {
-        console.log(error);
-        return {};
-      }
-    },
-    fullPrice(order) {
-      if (!order || !order.products) {
-        return 0;
-      }
-      return order.products.reduce((total, product) => total + product.price * product.quantity, 0);
-    },
-  },
+  mounted() {
+    this.$store.commit('getOrders');
+  }
 }
+
 </script>
 
 <style scoped>
