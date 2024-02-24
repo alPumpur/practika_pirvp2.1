@@ -100,7 +100,6 @@ export default createStore({
                     state.user_token = response.data.data.user_token;
                     localStorage.token = state.user_token;
                     console.log(response.data.data);
-                    alert('Вы зарегистрировались!');
                     if(localStorage.token !== null && localStorage.token !== undefined){
                         window.location.href = "/login";
                     }
@@ -118,7 +117,6 @@ export default createStore({
                     state.user_token = response.data.data.user_token;
                     localStorage.token = state.user_token;
                     console.log(response.data.data);
-
                 })
                 .catch(error =>{console.log(error)
                     alert('Попробуйте еще раз');

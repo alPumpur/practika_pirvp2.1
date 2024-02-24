@@ -52,7 +52,7 @@ export default {
     async getProduct(productId) {
       const token = this.store.state.user_token;
       try {
-        const response = await axios.get(`https://jurapro.bhuser.ru/api-shop/products/${productId}`, {
+        const response = await axios.get(`https://jurapro.bhuser.ru/api-shop/order`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

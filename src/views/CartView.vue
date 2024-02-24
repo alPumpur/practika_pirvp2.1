@@ -22,9 +22,7 @@
         </div>
         <button class="delete-button" @click="removeCart(item.id)">Удалить из корзины</button>
       </div>
-      <button class="order-button" @click="arrangeOrder">
-        Оформить заказ
-      </button>
+      <button class="order-button" @click="arrangeOrder">Оформить заказ</button>
     </div>
   </div>
 </template>
