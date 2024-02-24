@@ -1,5 +1,6 @@
 import index, { createStore } from 'vuex'
 import axios from "axios";
+
 export default createStore({
     state: {
         fio: '',
@@ -74,6 +75,7 @@ export default createStore({
                 });
             state.user_token = null;
             localStorage.clear();
+            state.cartList = [];
         },
         productCartAdd(state, product) {
             const token = state.user_token;
@@ -139,7 +141,7 @@ export default createStore({
             }
         },
         cartMinusPlus(state, { productId, newQuantity }) {
-            const productToUpdate = state.cartList.find((product) => product.id === productId);
+            const productToUpdate = state.cartList.find(product => product.id === productId);
             if (productToUpdate) {
                 productToUpdate.quantity = newQuantity;
             }
@@ -159,9 +161,9 @@ export default createStore({
                         }
                     );
                     if (response.status === 201) {
+                        // Добавляем заказ в начало списка заказов
                         state.orderList.unshift(response.data.data);
-                        localStorage.setItem('userOrders', JSON.stringify(state.orderList));
-                        state.cartList = [];
+                        state.cartList = []; // Очищаем корзину
                         console.log({ data: { order_id: response.data.data.id, message: 'Order is processed' } });
                     }
                 } catch (error) {
@@ -178,15 +180,15 @@ export default createStore({
         setOrders(state, orders) {
             state.orderList = orders;
         },
-    },
-    actions: {
-        async orderIn({ commit }) {
-            const storedOrders = localStorage.getItem('userOrders');
-            if (storedOrders) {
-                commit('setOrders', JSON.parse(storedOrders));
-                console.log({ data: { orders: JSON.parse(storedOrders) } });
+        updateCartQuantity(state, { productId, newQuantity }) {
+            const productToUpdate = state.cartList.find(product => product.id === productId);
+            if (productToUpdate) {
+                productToUpdate.quantity = newQuantity;
             }
         },
+    },
+    actions: {
+
     },
     modules: {
 
