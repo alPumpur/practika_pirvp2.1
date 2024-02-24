@@ -4,10 +4,10 @@
       <router-link class="prev-link" to="/">Назад</router-link>
     </div>
     <form @submit.prevent="store.commit('registration')" class="registration-form">
-      <label for="fio" class="form-label">ФИО:</label>
+      <label for="fio" class="form-label">Ваше имя:</label>
       <input id="fio" type="text" required v-model="store.state.fio" :class="{ 'input-field': true, 'error': !isFioValid }">
       <p v-if="!isFioValid" class="error-message">Введите корректное ФИО</p>
-      <label for="email" class="form-label">Эл. почта:</label>
+      <label for="email" class="form-label">Электронная почта:</label>
       <input id="email" type="email" required v-model="store.state.email" :class="{ 'input-field': true, 'error': !isEmailValid }">
       <p v-if="!isEmailValid" class="error-message">Введите корректный адрес электронной почты</p>
       <label for="password" class="form-label">Пароль:</label>
@@ -56,8 +56,8 @@ export default {
   flex-direction: column;
 }
 .form-label {
-  font-size: 22px; /* Увеличенный размер текста для меток */
-  margin-bottom: 5px; /* Немного увеличиваем расстояние между метками и полями */
+  font-size: 22px;
+  margin-bottom: 5px;
 }
 .input-field {
   font-size: 20px;
@@ -89,7 +89,7 @@ export default {
   border-radius: 5px;
   background-color: #8a2be2;
   padding: 12px 20px;
-  font-size: 22px; /* Увеличенный размер текста для кнопки */
+  font-size: 22px;
   transition: background-color 0.3s ease;
 }
 .submit-button:hover {

@@ -2,7 +2,7 @@
   <div class="form-container">
     <router-link class="prev-link" to="/">Назад</router-link>
     <form @submit.prevent="store.commit('login')" class="login-form">
-      <label class="form-label">Эл. почта:</label>
+      <label class="form-label">Электронная почта:</label>
       <input type="email" required v-model="store.state.email" :class="{ 'input-field': true, 'error': !isEmailValid }">
       <span v-if="!isEmailValid" class="error-message">Некорректный адрес эл. почты</span>
       <label class="form-label">Пароль:</label>

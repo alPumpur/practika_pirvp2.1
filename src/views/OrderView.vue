@@ -1,11 +1,11 @@
 <template>
   <div class="orders-container">
-    <h2>Your Orders:</h2>
+    <h2>Ваши заказы</h2>
     <div class="order-header">
-      <router-link class="prev-link" to="/">Go Back</router-link>
+      <router-link class="prev-link" to="/">Назад</router-link>
     </div>
     <div v-show="store.state.orderList.length === 0">
-      <h2 class="no-orders-msg">You have no orders at the moment.</h2>
+      <h2 class="no-orders-msg">В данный момент нет заказов</h2>
     </div>
     <div class="order" v-for="order in store.state.orderList" :key="order.id">
       <ul>
@@ -60,7 +60,7 @@ export default {
         return response.data.data;
       } catch (error) {
         console.log(error);
-        return {}; // Return empty object in case of error
+        return {};
       }
     },
     fullPrice(order) {

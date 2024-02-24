@@ -110,12 +110,6 @@ nav {
   margin-bottom: 10px;
 }
 
-.product-description {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 10px;
-}
-
 .product-price-container {
   border: 1px solid #8a2be2;
   border-radius: 5px;

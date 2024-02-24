@@ -1,7 +1,7 @@
 <template>
   <div class="cart-container">
     <div class="cart-header">
-      <router-link class="back-link" to="/">Вернуться назад</router-link>
+      <router-link class="back-link" to="/">Назад</router-link>
     </div>
     <div v-if="store.state.cartList.length === 0">
       <h2 class="empty-msg">Корзина пуста</h2>
@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-import store from "@/store"; // Импорт Vuex
+import store from "@/store";
 
 export default {
   computed: {
