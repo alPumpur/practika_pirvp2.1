@@ -10,10 +10,14 @@
     <div class="order" v-for="order in store.state.orderList" :key="order.id">
       <ul>
           <h3 class="order_number">Заказ: {{order.id}}</h3>
-          <p class="item_split" v-for="item in order.products">
-            <p class="item">Product -{{item}}-</p>
-          </p>
-          <h3 class="order_price">Price: {{order.order_price}}</h3>
+        <p>Список товаров в заказе:</p>
+        <ul>
+          <li v-for="item in order.products" :key="item">
+            <p class="item">id товара: {{ item }}</p>
+            <p class="item">Товар: {{ this.store.state.products.find(p => p.id === item).name }}</p>
+          </li>
+          <p>стоимость: {{order.order_price}} руб.</p>
+        </ul>
       </ul>
     </div>
   </div>
@@ -64,7 +68,9 @@ export default {
   margin-bottom: 10px;
   background-color: #d8bfd8;
 }
-
+li{
+  list-style-type: none;
+}
 .prev-link {
   font-size: 18px;
   color: #fff;
